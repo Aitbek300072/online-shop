@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
 // user
 import Loader from './components/Loader/Loader';
 import Login from './components/Login/Login';
@@ -8,16 +8,23 @@ import RegisterSuccess from './components/RegisterSuccess/RegisterSuccess';
 // product
 import ProductList from './components/products/ProductList/ProductList';
 
+const PrivateRoutes = () => {
+  const user = localStorage.getItem('email')
+
+  return user ? <Outlet /> : <Navigate to='/login' />
+}
+
 const Routing = () => {
   return (
     <Routes>
         {/* users routes */}
         <Route path="/register" element={<Register />} />
-        <Route path="/register-success" element={<RegisterSuccess />} />
         <Route path="/login" element={<Login />} />
         {/* products routes */}
-        <Route path="*" element={<Loader />} />
-        <Route path="/products" element={<ProductList />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="*" element={<Loader />} />
+          <Route path="/products" element={<ProductList />} />
+        </Route>
     </Routes>
   )
 }
