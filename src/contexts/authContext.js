@@ -5,7 +5,7 @@ export const authContext = React.createContext();
 const API = 'http://34.173.115.25/api/v1';
 
 const AuthContextProvider = ({ children }) => {
-  const [currentUSer, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
 
@@ -35,13 +35,20 @@ const AuthContextProvider = ({ children }) => {
     }
   }
 
+  const handleLogout = (navigate) => {
+    localStorage.removeItem('tokens');
+    localStorage.removeItem('email');
+    navigate('/login');
+  }
+
   return (
     <authContext.Provider
       value={{
         handleRegister,
         loading,
         error,
-        handleLogin
+        handleLogin,
+        handleLogout
       }}
     >
       {children}
